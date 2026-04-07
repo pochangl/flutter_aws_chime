@@ -26,6 +26,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 31
+    namespace 'com.oneplusdream.flutter_aws_chime'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
