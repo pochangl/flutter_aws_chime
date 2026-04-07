@@ -34,6 +34,12 @@ class _MeetingViewState extends State<MeetingView> {
   }
 
   @override
+  void dispose() {
+    meeting.stopMeeting();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
