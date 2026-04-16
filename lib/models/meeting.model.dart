@@ -189,38 +189,50 @@ class MeetingModel
   Future<bool> join() async {
     // call after config method
     debugPrint('join meeting');
+    debugPrint('join: requesting audio permissions...');
     bool audioPermissions =
         await methodChannelProvider.requestAudioPermissions();
+    debugPrint('join: audio permissions = $audioPermissions');
+    debugPrint('join: requesting video permissions...');
     bool videoPermissions =
         await methodChannelProvider.requestVideoPermissions();
+    debugPrint('join: video permissions = $videoPermissions');
 
     // Create error messages for incorrect permissions
     if (!_checkPermissions(audioPermissions, videoPermissions)) {
+      debugPrint('join: permissions check failed, returning false');
       return false;
     }
 
     // Check if device is connected to the internet
     bool deviceIsConnected = await _isConnectedToInternet();
     if (!deviceIsConnected) {
-      // Response.not_connected_to_internet
+      debugPrint('join: no internet connection, returning false');
       return false;
     }
-    // Send JSON to iOS
+    debugPrint('join: calling native join...');
     MethodChannelResponse? joinResponse = await methodChannelProvider
         .callMethod(MethodCallOption.join, meetingData.toJson());
 
     if (joinResponse == null) {
-      // Response.null_join_response
+      debugPrint('join: joinResponse is null, returning false');
       return false;
     }
+    debugPrint('join: joinResponse.result = ${joinResponse.result}');
 
     if (joinResponse.result) {
       await listAudioDevices();
       await initialAudioSelection();
-      await toggleMute(unmute: false);
+      try {
+        await toggleMute(unmute: false);
+      } catch (e) {
+        debugPrint('Initial mute failed (non-fatal): $e');
+      }
+      isMeetingActive.add(true);
+      debugPrint('join: success');
       return true;
     } else {
-      // To do error
+      debugPrint('join: joinResponse.result is false');
       return false;
     }
   }
