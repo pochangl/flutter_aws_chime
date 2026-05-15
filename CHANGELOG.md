@@ -16,3 +16,7 @@
 
 * Fix message self send not display issue
 
+## 1.1.1
+
+* Bump AWS Chime SDK to 0.25.3 / media 0.25.2 for 16 KB page size support (required by Android 15+ on devices with 16 KB pages)
+* Bump Android compileSdkVersion to 35 to match the Chime SDK 0.25.x compile target
