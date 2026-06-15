@@ -18,7 +18,10 @@ A new Flutter plugin project.
   s.platform = :ios, '11.0'
 
   # third party platform
-  s.dependency 'AmazonChimeSDK-Bitcode'
+  # Use the non-bitcode variant: App Store Connect rejects executables that
+  # contain bitcode (deprecated since Xcode 14). The non-bitcode pod is only
+  # published from 0.25.0 onward.
+  s.dependency 'AmazonChimeSDK', '0.25.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
