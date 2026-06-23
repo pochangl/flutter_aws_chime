@@ -127,7 +127,7 @@ class MeetingModel
         ? await methodChannelProvider.callMethod(MethodCallOption.localVideoOff)
         : await methodChannelProvider.callMethod(MethodCallOption.localVideoOn);
     if (res == null || !res.result) {
-      throw 'Failed to toggle your audio';
+      throw 'Failed to toggle your video';
     }
     await Future.delayed(const Duration(milliseconds: 1000));
     return getLocalAttendee().isVideoOn;
